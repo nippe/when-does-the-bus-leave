@@ -20,3 +20,11 @@ node_modules/
 
 # Webstorm stuff
 .idea
+
+# API keys
+keys.json
+urls.txt
+
+# VIM
+*.swp
+
