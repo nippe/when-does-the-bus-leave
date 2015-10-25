@@ -1,22 +1,35 @@
 var Promise = require('bluebird');
 var request = Promise.promisify(require('request'));
 var colors = require('colors');
+var _ = require('lodash');
+var Blink1 = require('node-blink1');
+var blink1 = new Blink1();
 
 var config = require('./config');
-
+var pollIntervall = 120000;
 function checkTimeTable(){
-
-	console.log('CTT');
 	request(getTimetableQueryObject())
-		.then(getTimeToNextBus);
+		.then(getTimeToNextBus)
+		.then(blinkTheBlink)
+		.then(theThenDebugger)
+		.catch(function(err){
+			console.log(err.message.red);
+		})
+		.then(setNewTimeout);
 
-	setTimeout(checkTimeTable, 120000);
+	console.log(pollIntervall/1000);
+	//setTimeout(checkTimeTable, pollIntervall);
 }
 
+function setNewTimeout() {
+	console.log('Setting tiemout ' + pollIntervall);
+	setTimeout(checkTimeTable, pollIntervall);
+}
 
 function getTimetableQueryObject() {
 	var api_key = config.realtimedepatures.api_key;
 	var siteid = config.realtimedepatures.siteid;
+
 	var timewindow = config.realtimedepatures.timewindow;
 	return {
 		url: 'http://api.sl.se/api2/realtimedepartures.json',
@@ -29,16 +42,62 @@ function getTimetableQueryObject() {
 	};
 }
 
-
 function getTimeToNextBus(reply) {
-	var data = JSON.parse(reply[0].body);
-	//var data = JSON.parse(body);
-	//console.log(body);
-	console.log(data.ResponseData.Buses);
+  return new Promise(function(resolve, reject) {
+    var data = JSON.parse(reply[0].body);
+    var bus = _.find(data.ResponseData.Buses, function(ttEntry) {
+      return (ttEntry.JourneyDirection === 2);
+    });
+
+    if (bus && bus.DisplayTime) {
+      var expected = new Date(bus.ExpectedDateTime + '+0100');
+      var now = new Date();
+      var diff = (expected - now) / 1000 / 60;
+			resolve(diff);
+    } else {
+			pollIntervall = 8 * 60 * 1000;
+			blink1.off();
+      reject(new Error('No busses in the given time slot'));
+    }
+  });
 }
 
-function theThenDebugger() {
-	console.log('Finite'.green);
+function blinkTheBlink(timeToNextBus) {
+	console.log(timeToNextBus.toString().yellow);
+	if(timeToNextBus < 10.0) {
+		pollIntervall = 30 * 1000;
+		if(timeToNextBus > 8) {
+			blink1.fadeToRGB(2000, 0, 255, 0);
+		}
+		else if(timeToNextBus > 5) {
+			pollIntervall = 15 * 1000;
+			blink1.fadeToRGB(5000, 69, 255, 0);
+		}
+		else if(timeToNextBus > 3) {
+			blink1.fadeToRGB(5000, 255, 69, 0);
+		}
+		else if(timeToNextBus > 1) {
+			blink1.fadeToRGB(5000, 255, 0 , 0);
+		}
+		else if(timeToNextBus > 0) {
+			pollIntervall = 5 * 1000;
+			blink1.writePatternLine(200, 255, 0, 0, 0);
+			blink1.writePatternLine(200, 0, 0, 0, 1);
+			blink1.play(0);
+		}
+	}
+	else {
+		pollIntervall = 2 * 60 * 1000;
+		blink1.fadeToRGB(1000, 0, 255, 0, function(){
+			blink1.fadeToRGB(1000, 0, 0, 0, function(){
+				blink1.off();
+			});
+		});
+	}
+}
+
+function theThenDebugger(ttb) {
+	console.log('Finite'.magenta);
 }
 
 checkTimeTable();
