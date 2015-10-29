@@ -9,5 +9,9 @@ module.exports = {
 	},
 	station_search: {
 		api_key: keys.sites
+	},
+	settings: {
+		use_time_constriants: true
 	}
+
 };

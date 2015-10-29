@@ -7,8 +7,12 @@ var blink1 = new Blink1();
 
 var config = require('./config');
 var pollIntervall = 120000;
-function checkTimeTable(){
-	request(getTimetableQueryObject())
+function checkTimeTable() {
+  
+  var useTimeConstriants = config.settings.use_time_constriants || false;
+
+  isItAValidTime(new Date(), useTimeConstriants)
+	  .then(getSlDataFromApi)
 		.then(getTimeToNextBus)
 		.then(blinkTheBlink)
 		.catch(function(err){
@@ -17,10 +21,29 @@ function checkTimeTable(){
 		.then(setNewTimeout);
 }
 
+function getSlDataFromApi(indata) {
+  return request(getTimetableQueryObject());
+}
+
 function setNewTimeout() {
 	console.log('Setting tiemout ' + pollIntervall);
 	setTimeout(checkTimeTable, pollIntervall);
 }
+
+function isItAValidTime(currentTime, usingTimeSlots) {
+  return new Promise(function(resolve, reject) {
+    var theHour = currentTime.getHours();
+    if(usingTimeSlots && theHour >= 6 && theHour < 9) {
+      console.log(theHour);
+      resolve(true);
+    } else {
+      blink1.off();
+      pollIntervall = 5 * 60 * 1000;
+      reject(new Error('Not in valid time slot'));
+    }
+  });
+}
+
 
 function getTimetableQueryObject() {
 	var api_key = config.realtimedepatures.api_key;
