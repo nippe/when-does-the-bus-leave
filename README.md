@@ -1,6 +1,6 @@
 # When Does the Bus Leave
 
-This is a little hobby project of min just keeping track on when the bus leaves the bus stop by my house so I don’t have to check the time table. Nerdy I know.
+This is a little hobby project of min just keeping track on when the bus leaves the bus stop by my house so I don’t have to check the time table. Nerdy I know. [What does it do](#what-does-it-do)
 
 ## Requirements
 * Blink(1) from ThingM - https://blink1.thingm.com/
