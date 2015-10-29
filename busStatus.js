@@ -61,7 +61,7 @@ function getTimetableQueryObject() {
 
   var timewindow = config.realtimedepatures.timewindow;
   return {
-    url: 'http://api.sl.se/api2/realtimedepartures.json',
+    url: config.realtimedepatures.url,
     qs: {
       key: api_key,
       siteid: siteid,
