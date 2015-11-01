@@ -48,13 +48,20 @@ function isItAValidTime(currentTime, usingTimeSlots) {
     if (!usingTimeSlots || ((theHour >= 6 && theHour < 9) && (day > 0 && day < 6))) {
       resolve(true);
     } else {
-      blink1.off();
+			blinkPing();
       pollIntervall = 5 * 60 * 1000;
       reject(new Error('Not in valid time slot'));
     }
   });
 }
 
+function blinkPing() {
+	blink1.fadeToRGB(100, 255, 0, 255, function(){
+		blink1.fadeToRGB(200, 0, 0, 0, function(){
+			blink1.off();
+		});
+	});
+}
 
 function getTimetableQueryObject() {
   var api_key = config.realtimedepatures.api_key;
