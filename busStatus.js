@@ -44,7 +44,8 @@ function setNewTimeout() {
 function isItAValidTime(currentTime, usingTimeSlots) {
   return new Promise(function(resolve, reject) {
     var theHour = currentTime.getHours();
-    if (!usingTimeSlots || (theHour >= 6 && theHour < 9)) {
+		var day = currentTime.getDay();
+    if (!usingTimeSlots || ((theHour >= 6 && theHour < 9) && (day > 0 && day < 6))) {
       resolve(true);
     } else {
       blink1.off();
@@ -58,8 +59,8 @@ function isItAValidTime(currentTime, usingTimeSlots) {
 function getTimetableQueryObject() {
   var api_key = config.realtimedepatures.api_key;
   var siteid = config.realtimedepatures.siteid;
-
   var timewindow = config.realtimedepatures.timewindow;
+  
   return {
     url: config.realtimedepatures.url,
     qs: {
