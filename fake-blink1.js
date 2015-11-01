@@ -9,5 +9,8 @@ module.exports = {
   },
   writePatternLine: function(time, r, g, b, cb) {
     console.log('\t- Blink is applying pattern and then '.cyan + (cb ? 'call back'.cyan : 'nothing'.cyan) );
+  },
+  play: function(value) {
+    console.log('\t- Blink is playing pattern with input: '.cyan + value.toString().green );
   }
 };
