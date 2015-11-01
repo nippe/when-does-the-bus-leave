@@ -1,0 +1,4 @@
+module.exports = {
+	sites: '123456789abcde',
+	realtimeinfo: 'abcde123456abcde123456abcde'
+};
