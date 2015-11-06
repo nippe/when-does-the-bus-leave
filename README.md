@@ -6,6 +6,7 @@ This is a little hobby project of min just keeping track on when the bus leaves 
 * Blink(1) from ThingM - https://blink1.thingm.com/
 * Node.js
 * API key for SL’s (Stockholms bus service) real time API. You can get it at: www.trafiklab.se
+
 ### Optionals
 * Raspberry Pi with connectivity
 * API Key for SL’s Site Ids (it’s probably a simpler way to get a hold of the id)
@@ -29,7 +30,7 @@ module.exports = {
 };
 ```
 
-Configure your bus stop:
+Configure your bus stop, in `config.js`:
 
 ```
 var keys = require(‘./keys’);
@@ -37,12 +38,16 @@ var keys = require(‘./keys’);
 module.exports = {
 	realtimedepatures: {
 		api_key: keys.realtimeinfo,
-		sited: ‘1868’,     // Site Id of your station
-		time window: ’20’, // time in minutes it gets departures for
-		direction: ‘2’     // the direction of your ride
+		url: 'http://api.sl.se/api2/realtimedepartures.json',
+		siteid: 1868,
+		timewindow: 20,
+		direction: 2
 	},
 	station_search: {
 		api_key: keys.sites
+	},
+	settings: {
+		use_time_constriants: false  // <-- Using time slots or not
 	}
 };
 ```
