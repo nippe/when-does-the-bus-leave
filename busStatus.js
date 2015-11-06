@@ -45,7 +45,7 @@ function isItAValidTime(currentTime, usingTimeSlots) {
   return new Promise(function(resolve, reject) {
     var theHour = currentTime.getHours();
 		var day = currentTime.getDay();
-    if (!usingTimeSlots || ((theHour >= 6 && theHour < 9) && (day > 0 && day < 6))) {
+    if (!usingTimeSlots || ((theHour >= 5 && theHour < 8) && (day > 0 && day < 6))) {
       resolve(true);
     } else {
 			blinkPing();
@@ -57,7 +57,7 @@ function isItAValidTime(currentTime, usingTimeSlots) {
 
 function blinkPing() {
 	blink1.fadeToRGB(100, 255, 0, 255, function(){
-		blink1.fadeToRGB(200, 0, 0, 0, function(){
+		blink1.fadeToRGB(100, 0, 0, 0, function(){
 			blink1.off();
 		});
 	});
@@ -67,7 +67,7 @@ function getTimetableQueryObject() {
   var api_key = config.realtimedepatures.api_key;
   var siteid = config.realtimedepatures.siteid;
   var timewindow = config.realtimedepatures.timewindow;
-  
+
   return {
     url: config.realtimedepatures.url,
     qs: {
@@ -102,17 +102,17 @@ function getTimeToNextBus(reply) {
 function blinkTheBlink(timeToNextBus) {
   console.log(timeToNextBus.toString().yellow);
   if (timeToNextBus < 10.0) {
-    pollIntervall = 30 * 1000;
+    pollIntervall = 60 * 1000;
     if (timeToNextBus > 8) {
       blink1.fadeToRGB(2000, 0, 255, 0);
     } else if (timeToNextBus > 5) {
-      pollIntervall = 20 * 1000;
+      pollIntervall = 45 * 1000;
       blink1.fadeToRGB(5000, 69, 255, 0);
     } else if (timeToNextBus > 3) {
-      pollIntervall = 15 * 1000;
+      pollIntervall = 20 * 1000;
       blink1.fadeToRGB(5000, 240, 230, 140);
     } else if (timeToNextBus > 1) {
-      pollIntervall = 10 * 1000;
+      pollIntervall = 15 * 1000;
       blink1.fadeToRGB(5000, 255, 76, 19);
     } else if (timeToNextBus > 0) {
       pollIntervall = 5 * 1000;
