@@ -7,6 +7,7 @@
     "bluebird": "^2.10.2",
     "colors": "^1.1.2",
     "lodash": "^3.10.1",
+    "moment": "^2.10.6",
     "node-blink1": "^0.2.2",
     "node-hid": "^0.5.1",
     "request": "^2.65.0"

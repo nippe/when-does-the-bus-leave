@@ -4,6 +4,7 @@ var colors = require('colors');
 var _ = require('lodash');
 var Blink1 = require('node-blink1');
 var blink1;
+var moment = require('moment');
 
 var config = require('./config');
 var pollIntervall = 120000;
@@ -87,8 +88,8 @@ function getTimeToNextBus(reply) {
     });
 
     if (bus && bus.DisplayTime) {
-      var expected = new Date(bus.ExpectedDateTime + '+0100');
-      var now = new Date();
+			var expected = moment(bus.ExpectedDateTime);
+      var now = moment();
       var diff = (expected - now) / 1000 / 60;
       resolve(diff);
     } else {
