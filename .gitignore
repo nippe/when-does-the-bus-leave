@@ -28,3 +28,4 @@ urls.txt
 # VIM
 *.swp
 
+.vscode/
