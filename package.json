@@ -4,17 +4,17 @@
   "description": "Little node.js app to run on my raspberry pi as a demon and bilnk different patterns when the bus time i closing in the morning. Using a blink(1)",
   "main": "busStatus.js",
   "dependencies": {
-    "bluebird": "^2.10.2",
+    "bluebird": "^3.4.7",
     "colors": "^1.1.2",
-    "lodash": "^3.10.1",
+    "lodash": "^4.17.4",
     "moment": "^2.10.6",
     "node-blink1": "^0.2.2",
     "node-hid": "^0.5.1",
     "request": "^2.65.0"
   },
   "devDependencies": {
-    "eslint": "^1.7.3",
-    "mocha": "^2.3.3"
+    "eslint": "^3.13.1",
+    "mocha": "^3.2.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

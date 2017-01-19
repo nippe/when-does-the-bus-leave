@@ -82,7 +82,7 @@ function getTimetableQueryObject() {
 
 function getTimeToNextBus(reply) {
   return new Promise(function(resolve, reject) {
-    var data = JSON.parse(reply[0].body);
+    var data = JSON.parse(reply.body);
     var bus = _.find(data.ResponseData.Buses, function(ttEntry) {
       return (ttEntry.JourneyDirection === 2);
     });
